@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.MemberMapper">
+    <select id="getMemberList" resultType="com.springboot.dwxcp.entity.Member">
+        select * from member
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="condition != null and condition != ''">
+                and condition like concat('%', #{condition}, '%')
+            </if>
+            <if test="groups != null and groups != ''">
+                and `groups` like concat('%', #{groups}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addMember" useGeneratedKeys="true" keyProperty="id">
+        insert into member (name, sex, nation, culture, birthday, job, party, position, title, address, `condition`, `groups`, `transfer`, remark)
+        values (#{name}, #{sex}, #{nation}, #{culture}, #{birthday}, #{job}, #{party}, #{position}, #{title}, #{address}, #{condition}, #{groups}, #{transfer}, #{remark})
+    </insert>
+
+    <delete id="deleteMemberById">
+        delete from member where id = #{id}
+    </delete>
+
+    <update id="editMemberById" parameterType="com.springboot.dwxcp.entity.Member">
+        update member
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="nation != null and nation != ''">
+                nation = #{nation},
+            </if>
+            <if test="culture != null and culture != ''">
+                culture = #{culture},
+            </if>
+            <if test="birthday != null and birthday != ''">
+                birthday = #{birthday},
+            </if>
+            <if test="job != null and job != ''">
+                job = #{job},
+            </if>
+            <if test="party != null and party != ''">
+                party = #{party},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="title != null and title != ''">
+                title = #{title},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="condition != null and condition != ''">
+                `condition` = #{condition},
+            </if>
+            <if test="groups != null and groups != ''">
+                `groups` = #{groups},
+            </if>
+            <if test="transfer != null and transfer != ''">
+                `transfer` = #{transfer},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="batchAddMember" parameterType="list">
+        insert into member (name, sex, nation, culture, birthday, job, party, position, title, address, `condition`, `groups`, `transfer`, remark)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name}, #{item.sex}, #{item.nation}, #{item.culture}, #{item.birthday},
+             #{item.job}, #{item.party}, #{item.position}, #{item.title},
+             #{item.address}, #{item.condition}, #{item.groups}, #{item.transfer}, #{item.remark})
+        </foreach>
+    </insert>
+</mapper>

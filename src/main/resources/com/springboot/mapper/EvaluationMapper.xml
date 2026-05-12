@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.EvaluationMapper">
+    <select id="getEvaluationList" resultType="com.springboot.dwxcp.entity.Evaluation">
+        select * from evaluation
+        <where>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="responsibilityPost != null and responsibilityPost != ''">
+                and responsibility_post like concat('%', #{responsibilityPost}, '%')
+            </if>
+            <if test="responsibilityArea != null and responsibilityArea != ''">
+                and responsibility_area like concat('%', #{responsibilityArea}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addEvaluation" useGeneratedKeys="true" keyProperty="id">
+        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good)
+        values (#{year}, #{quarter}, #{partyBranch}, #{name}, #{responsibilityPost}, #{responsibilityArea}, #{comments}, #{good})
+    </insert>
+
+    <delete id="deleteEvaluationById">
+        delete from evaluation where id = #{id}
+    </delete>
+
+    <update id="editEvaluationById" parameterType="com.springboot.dwxcp.entity.Evaluation">
+        update evaluation
+        <set>
+            <if test="year != null and year != ''">
+                year = #{year},
+            </if>
+            <if test="quarter != null and quarter != ''">
+                quarter = #{quarter},
+            </if>
+            <if test="partyBranch != null and partyBranch != ''">
+                party_branch = #{partyBranch},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="responsibilityPost != null and responsibilityPost != ''">
+                responsibility_post = #{responsibilityPost},
+            </if>
+            <if test="responsibilityArea != null and responsibilityArea != ''">
+                responsibility_area = #{responsibilityArea},
+            </if>
+            <if test="comments != null and comments != ''">
+                comments = #{comments},
+            </if>
+            <if test="good != null and good != ''">
+                good = #{good}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="batchAddEvaluation" parameterType="list">
+        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.year}, #{item.quarter}, #{item.partyBranch}, #{item.name},
+            #{item.responsibilityPost}, #{item.responsibilityArea}, #{item.comments}, #{item.good})
+        </foreach>
+    </insert>
+</mapper>

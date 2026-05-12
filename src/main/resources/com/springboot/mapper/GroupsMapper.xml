@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.GroupsMapper">
+    <select id="getGroupsList" resultType="com.springboot.dwxcp.entity.Groups">
+        select * from `groups`
+        <where>
+            <if test="party != null and party != ''">
+                and party like concat('%', #{party}, '%')
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%', #{name}, '%')
+            </if>
+            <if test="name1 != null and name1 != ''">
+                and name1 like concat('%', #{name1}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addGroups" useGeneratedKeys="true" keyProperty="id">
+        insert into `groups` (party, name, fushuji, zuzhi, xuanchuan, counts, jobs, name1, name2)
+        values (#{party}, #{name}, #{fushuji}, #{zuzhi}, #{xuanchuan}, #{counts}, #{jobs}, #{name1}, #{name2})
+    </insert>
+
+    <delete id="deleteGroupsById">
+        delete from `groups` where id = #{id}
+    </delete>
+
+    <update id="editGroupsById" parameterType="com.springboot.dwxcp.entity.Groups">
+        update `groups`
+        <set>
+            <if test="party != null and party != ''">
+                party = #{party},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="fushuji != null and fushuji != ''">
+                fushuji = #{fushuji},
+            </if>
+            <if test="zuzhi != null and zuzhi != ''">
+                zuzhi = #{zuzhi},
+            </if>
+            <if test="xuanchuan != null and xuanchuan != ''">
+                xuanchuan = #{xuanchuan},
+            </if>
+            <if test="counts != null and counts != ''">
+                counts = #{counts},
+            </if>
+            <if test="jobs != null and jobs != ''">
+                jobs = #{jobs},
+            </if>
+            <if test="name1 != null and name1 != ''">
+                name1 = #{name1},
+            </if>
+            <if test="name2 != null and name2 != ''">
+                name2 = #{name2}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="batchAddGroups" parameterType="list">
+        insert into `groups` (party, name, fushuji, zuzhi, xuanchuan, counts, jobs, name1, name2)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.party}, #{item.name}, #{item.fushuji}, #{item.zuzhi}, #{item.xuanchuan}, #{item.counts}, #{item.jobs}, #{item.name1}, #{item.name2})
+        </foreach>
+    </insert>
+</mapper>

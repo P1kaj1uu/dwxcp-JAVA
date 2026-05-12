@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.UserMapper">
+    <select id="selectUserList" resultType="com.springboot.dwxcp.entity.User">
+        select * from user order by id desc
+    </select>
+
+    <select id="selectMyUser" resultType="com.springboot.dwxcp.entity.User">
+        select * from user where id = #{id}
+    </select>
+
+    <select id="selectInfoByName" resultType="com.springboot.dwxcp.entity.User">
+        select * from user where username = #{username}
+    </select>
+
+    <update id="editUserPasswordById" parameterType="com.springboot.dwxcp.entity.User">
+        update user
+        <set>
+            <if test="password != null and password != ''">password=#{password}</if>
+        </set>
+        where username = #{username}
+    </update>
+
+    <delete id="deleteUserById">
+        delete from user where id = #{id}
+    </delete>
+
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        insert into user (username, password)
+        values (#{username}, #{password})
+    </insert>
+
+    <select id="selectUserLogin" resultType="com.springboot.dwxcp.entity.User">
+        select * from user where username = #{username} and password = #{password}
+    </select>
+</mapper>

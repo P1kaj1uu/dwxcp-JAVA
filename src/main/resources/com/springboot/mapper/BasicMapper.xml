@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.springboot.dwxcp.mapper.BasicMapper">
+    <select id="getBasicList" resultType="com.springboot.dwxcp.entity.Basic">
+        select * from basic
+    </select>
+
+    <select id="getBasicByType" resultType="com.springboot.dwxcp.entity.Basic">
+        select * from basic where type = #{type}
+    </select>
+
+    <insert id="addBasic" useGeneratedKeys="true" keyProperty="id">
+        insert into basic (name, position, type, photo)
+        values (#{name}, #{position}, #{type}, #{photo})
+    </insert>
+
+    <delete id="deleteBasicById">
+        delete from basic where id = #{id}
+    </delete>
+
+    <update id="editBasicById" parameterType="com.springboot.dwxcp.entity.Basic">
+        update basic
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="position != null and position != ''">
+                position = #{position},
+            </if>
+            <if test="type != null and type != ''">
+                type = #{type},
+            </if>
+            <if test="photo != null">
+                photo = #{photo}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="uploadPhoto" parameterType="com.springboot.dwxcp.entity.Basic">
+        update basic set photo = #{photo} where id = #{id}
+    </update>
+
+    <select id="selectBasicById" resultType="com.springboot.dwxcp.entity.Basic">
+        select * from basic where id = #{id}
+    </select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.BranchsMapper">
+    <select id="getBranchsList" resultType="com.springboot.dwxcp.entity.Branchs">
+        select * from branchs
+    </select>
+
+    <insert id="addBranchs" useGeneratedKeys="true" keyProperty="id">
+        insert into branchs (count1, count2, count3, count4, count5, count6, count7, count8, count9, count10,
+                             count11, count12, count13, count14, count15, count16, count17, count18, count19, count20, time)
+        values (#{count1}, #{count2}, #{count3}, #{count4}, #{count5}, #{count6}, #{count7}, #{count8}, #{count9}, #{count10},
+                #{count11}, #{count12}, #{count13}, #{count14}, #{count15}, #{count16}, #{count17}, #{count18}, #{count19}, #{count20}, #{time})
+    </insert>
+
+    <delete id="deleteBranchsById">
+        delete from branchs where id = #{id}
+    </delete>
+
+    <update id="editBranchsById" parameterType="com.springboot.dwxcp.entity.Branchs">
+        update branchs
+        <set>
+            <if test="count1 != null and count1 != ''">
+                count1 = #{count1},
+            </if>
+            <if test="count2 != null and count2 != ''">
+                count2 = #{count2},
+            </if>
+            <if test="count3 != null and count3 != ''">
+                count3 = #{count3},
+            </if>
+            <if test="count4 != null and count4 != ''">
+                count4 = #{count4},
+            </if>
+            <if test="count5 != null and count5 != ''">
+                count5 = #{count5},
+            </if>
+            <if test="count6 != null and count6 != ''">
+                count6 = #{count6},
+            </if>
+            <if test="count7 != null and count7 != ''">
+                count7 = #{count7},
+            </if>
+            <if test="count8 != null and count8 != ''">
+                count8 = #{count8},
+            </if>
+            <if test="count9 != null and count9 != ''">
+                count9 = #{count9},
+            </if>
+            <if test="count10 != null and count10 != ''">
+                count10 = #{count10},
+            </if>
+            <if test="count11 != null and count11 != ''">
+                count11 = #{count11},
+            </if>
+            <if test="count12 != null and count12 != ''">
+                count12 = #{count12},
+            </if>
+            <if test="count13 != null and count13 != ''">
+                count13 = #{count13},
+            </if>
+            <if test="count14 != null and count14 != ''">
+                count14 = #{count14},
+            </if>
+            <if test="count15 != null and count15 != ''">
+                count15 = #{count15},
+            </if>
+            <if test="count16 != null and count16 != ''">
+                count16 = #{count16},
+            </if>
+            <if test="count17 != null and count17 != ''">
+                count17 = #{count17},
+            </if>
+            <if test="count18 != null and count18 != ''">
+                count18 = #{count18},
+            </if>
+            <if test="count19 != null and count19 != ''">
+                count19 = #{count19},
+            </if>
+            <if test="count20 != null and count20 != ''">
+                count20 = #{count20},
+            </if>
+            <if test="time != null and time != ''">
+                time = #{time}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="batchAddBranchs" parameterType="list">
+        insert into branchs (count1, count2, count3, count4, count5, count6, count7, count8, count9, count10,
+        count11, count12, count13, count14, count15, count16, count17, count18, count19, count20, time)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.count1}, #{item.count2}, #{item.count3}, #{item.count4}, #{item.count5}, #{item.count6},
+            #{item.count7}, #{item.count8}, #{item.count9}, #{item.count10}, #{item.count11}, #{item.count12},
+            #{item.count13}, #{item.count14}, #{item.count15}, #{item.count16}, #{item.count17}, #{item.count18},
+            #{item.count19}, #{item.count20}, #{item.time})
+        </foreach>
+    </insert>
+</mapper>
