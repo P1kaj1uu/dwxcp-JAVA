@@ -22,6 +22,7 @@ public class TokenConfig implements WebMvcConfigurer {
                         "/api/user/editPassword",
                         "/api/pdf/preview",
                         "/api/basic/upload-photo",
+                        "/api/result/add",
                         "/swagger-ui.html",
                         "/webjars/",
                         "/swagger-resources/**",
