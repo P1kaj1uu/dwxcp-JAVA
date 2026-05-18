@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.BasicInfoNumMapper">
+    <select id="getBasicInfoNumList" resultType="com.springboot.dwxcp.entity.BasicInfoNum">
+        select * from basic_info_num
+    </select>
+
+    <insert id="addBasicInfoNum" useGeneratedKeys="true" keyProperty="id">
+        insert into basic_info_num (party_num1, party_num2, party_num3, party_num4, party_num5, party_num6,
+                                    che_num1, che_num2,
+                                    tuan_num1, tuan_num2, tuan_num3, tuan_num4)
+        values (#{partyNum1}, #{partyNum2}, #{partyNum3}, #{partyNum4}, #{partyNum5}, #{partyNum6},
+                #{cheNum1}, #{cheNum2},
+                #{tuanNum1}, #{tuanNum2}, #{tuanNum3}, #{tuanNum4})
+    </insert>
+
+    <update id="editBasicInfoNumById" parameterType="com.springboot.dwxcp.entity.BasicInfoNum">
+        update basic_info_num
+        <set>
+            <if test="partyNum1 != null and partyNum1 != ''">
+                party_num1 = #{partyNum1},
+            </if>
+            <if test="partyNum2 != null and partyNum2 != ''">
+                party_num2 = #{partyNum2},
+            </if>
+            <if test="partyNum3 != null and partyNum3 != ''">
+                party_num3 = #{partyNum3},
+            </if>
+            <if test="partyNum4 != null and partyNum4 != ''">
+                party_num4 = #{partyNum4},
+            </if>
+            <if test="partyNum5 != null and partyNum5 != ''">
+                party_num5 = #{partyNum5},
+            </if>
+            <if test="partyNum6 != null and partyNum6 != ''">
+                party_num6 = #{partyNum6},
+            </if>
+            <if test="cheNum1 != null and cheNum1 != ''">
+                che_num1 = #{cheNum1},
+            </if>
+            <if test="cheNum2 != null and cheNum2 != ''">
+                che_num2 = #{cheNum2},
+            </if>
+            <if test="tuanNum1 != null and tuanNum1 != ''">
+                tuan_num1 = #{tuanNum1},
+            </if>
+            <if test="tuanNum2 != null and tuanNum2 != ''">
+                tuan_num2 = #{tuanNum2},
+            </if>
+            <if test="tuanNum3 != null and tuanNum3 != ''">
+                tuan_num3 = #{tuanNum3},
+            </if>
+            <if test="tuanNum4 != null and tuanNum4 != ''">
+                tuan_num4 = #{tuanNum4}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
