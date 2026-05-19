@@ -15,9 +15,9 @@ public class EvaluationServiceImpl extends ServiceImpl<EvaluationMapper, Evaluat
     private EvaluationMapper evaluationMapper;
 
     @Override
-    public List<Evaluation> getEvaluationList(String name, String responsibilityPost,
+    public List<Evaluation> getEvaluationList(String name, String year, String quarter, String responsibilityPost,
                                               String responsibilityArea, int pageNum, int pageSize) {
-        return evaluationMapper.getEvaluationList(name, responsibilityPost, responsibilityArea, pageNum, pageSize);
+        return evaluationMapper.getEvaluationList(name, year, quarter, responsibilityPost, responsibilityArea, pageNum, pageSize);
     }
 
     @Override

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace：命名空间
+    id：sql语句的唯一标识
+    resultType：返回值类型
+-->
+<mapper namespace="com.springboot.dwxcp.mapper.PartyBranchEvaluationMapper">
+    <select id="getPartyBranchEvaluationList" resultType="com.springboot.dwxcp.entity.PartyBranchEvaluation">
+        select * from party_branch_evaluation
+        <where>
+            <if test="partyBranch != null and partyBranch != ''">
+                and party_branch like concat('%', #{partyBranch}, '%')
+            </if>
+            <if test="year != null and year != ''">
+                and year like concat('%', #{year}, '%')
+            </if>
+            <if test="quarter != null and quarter != ''">
+                and quarter like concat('%', #{quarter}, '%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="addPartyBranchEvaluation" useGeneratedKeys="true" keyProperty="id">
+        insert into party_branch_evaluation (year, party_branch, quarter, level)
+        values (#{year}, #{partyBranch}, #{quarter}, #{level})
+    </insert>
+
+    <delete id="deletePartyBranchEvaluationById">
+        delete from party_branch_evaluation where id = #{id}
+    </delete>
+
+    <update id="editPartyBranchEvaluationById" parameterType="com.springboot.dwxcp.entity.PartyBranchEvaluation">
+        update party_branch_evaluation
+        <set>
+            <if test="year != null and year != ''">
+                year = #{year},
+            </if>
+            <if test="partyBranch != null and partyBranch != ''">
+                party_branch = #{partyBranch},
+            </if>
+            <if test="quarter != null and quarter != ''">
+                quarter = #{quarter},
+            </if>
+            <if test="level != null and level != ''">
+                level = #{level}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>

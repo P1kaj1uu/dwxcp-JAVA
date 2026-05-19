@@ -9,6 +9,8 @@ public interface EvaluationService {
     // 查询党员创岗建区季度评议汇总表列表
     List<Evaluation> getEvaluationList(
             @Param("name") String name,
+            @Param("year") String year,
+            @Param("quarter") String quarter,
             @Param("responsibilityPost") String responsibilityPost,
             @Param("responsibilityArea") String responsibilityArea,
             @Param("pageNum") int pageNum,
