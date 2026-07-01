@@ -23,4 +23,6 @@ public class Evaluation {
     private String comments; // 对党员的点评意见
 
     private String good; // 四优
+
+    private String safetyStar; // 党员安全之星
 }

@@ -30,8 +30,8 @@
     </select>
 
     <insert id="addEvaluation" useGeneratedKeys="true" keyProperty="id">
-        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good)
-        values (#{year}, #{quarter}, #{partyBranch}, #{name}, #{responsibilityPost}, #{responsibilityArea}, #{comments}, #{good})
+        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good, safetyStar)
+        values (#{year}, #{quarter}, #{partyBranch}, #{name}, #{responsibilityPost}, #{responsibilityArea}, #{comments}, #{good}, #{safetyStar})
     </insert>
 
     <delete id="deleteEvaluationById">
@@ -63,18 +63,21 @@
                 comments = #{comments},
             </if>
             <if test="good != null and good != ''">
-                good = #{good}
+                good = #{good},
+            </if>
+            <if test="safetyStar != null and safetyStar != ''">
+                safetyStar = #{safetyStar}
             </if>
         </set>
         where id = #{id}
     </update>
 
     <insert id="batchAddEvaluation" parameterType="list">
-        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good)
+        insert into evaluation (year, quarter, party_branch, name, responsibility_post, responsibility_area, comments, good, safetyStar)
         values
         <foreach collection="list" item="item" separator=",">
             (#{item.year}, #{item.quarter}, #{item.partyBranch}, #{item.name},
-            #{item.responsibilityPost}, #{item.responsibilityArea}, #{item.comments}, #{item.good})
+            #{item.responsibilityPost}, #{item.responsibilityArea}, #{item.comments}, #{item.good}, #{item.safetyStar})
         </foreach>
     </insert>
 </mapper>
