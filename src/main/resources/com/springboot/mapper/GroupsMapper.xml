@@ -8,19 +8,39 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.GroupsMapper">
-    <select id="getGroupsList" resultType="com.springboot.dwxcp.entity.Groups">
-        select * from `groups`
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.Groups">
+        <id column="id" property="id"/>
+        <result column="party" property="party"/>
+        <result column="name" property="name"/>
+        <result column="fushuji" property="fushuji"/>
+        <result column="zuzhi" property="zuzhi"/>
+        <result column="xuanchuan" property="xuanchuan"/>
+        <result column="counts" property="counts"/>
+        <result column="jobs" property="jobs"/>
+        <result column="name1" property="name1"/>
+        <result column="name2" property="name2"/>
+    </resultMap>
+
+    <!--
+        党小组列表：分页由 PageHelper.startPage 控制
+        - party / name 是下拉枚举，走 =
+        - name1 是姓名搜索，改为前缀匹配（走索引）
+    -->
+    <select id="getGroupsList" resultMap="BaseResultMap">
+        SELECT id, party, name, fushuji, zuzhi, xuanchuan, counts, jobs, name1, name2
+        FROM `groups`
         <where>
             <if test="party != null and party != ''">
-                and party like concat('%', #{party}, '%')
+                AND party = #{party}
             </if>
             <if test="name != null and name != ''">
-                and name like concat('%', #{name}, '%')
+                AND name = #{name}
             </if>
             <if test="name1 != null and name1 != ''">
-                and name1 like concat('%', #{name1}, '%')
+                AND name1 LIKE CONCAT(#{name1}, '%')
             </if>
         </where>
+        ORDER BY id DESC
     </select>
 
     <insert id="addGroups" useGeneratedKeys="true" keyProperty="id">

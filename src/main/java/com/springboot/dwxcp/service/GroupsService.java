@@ -1,13 +1,14 @@
 package com.springboot.dwxcp.service;
 
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.Groups;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface GroupsService {
-    // 查询党小组列表
-    List<Groups> getGroupsList(
+    // 查询党小组列表（分页）
+    PageInfo<Groups> getGroupsList(
             @Param("party") String party,
             @Param("name") String name,
             @Param("name1") String name1,

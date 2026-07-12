@@ -12,9 +12,7 @@ public interface EvaluationMapper extends BaseMapper<Evaluation> {
             @Param("year") String year,
             @Param("quarter") String quarter,
             @Param("responsibilityPost") String responsibilityPost,
-            @Param("responsibilityArea") String responsibilityArea,
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
+            @Param("responsibilityArea") String responsibilityArea
     );
 
     boolean addEvaluation(Evaluation evaluation);

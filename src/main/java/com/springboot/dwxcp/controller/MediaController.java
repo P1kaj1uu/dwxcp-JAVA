@@ -61,13 +61,13 @@ public class MediaController {
             byte[] fileContent = file.getBytes();
             System.out.println("文件大小: " + fileContent.length + " bytes");
             media.setFileContent(fileContent);
-            // 可以设置访问URL，例如：/api/media/preview?id={id}
-            media.setFileUrl("/api/media/preview?id=");
 
             boolean flag = mediaService.uploadMedia(media);
             if (!flag) {
                 response = new BaseResponse(StatusCode.Fail.getCode(), "上传失败，请返回重试");
             } else {
+                // insert 回填 id 后再拼 URL（之前是空 id，前端调用预览必 404）
+                media.setFileUrl("/api/media/preview?id=" + media.getId());
                 System.out.println("上传成功，文件ID: " + media.getId());
             }
             response.setData(media);

@@ -22,21 +22,10 @@ public class EvaluationResultController {
     @ApiOperation("查询考核本支部结果列表")
     @GetMapping(value = "/list")
     private BaseResponse getEvaluationResultList(
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询考核本支部结果列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<EvaluationResult> list = null;
-        PageInfo page = null;
-        try {
-            list = evaluationResultService.getEvaluationResultList(pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<EvaluationResult> page = evaluationResultService.getEvaluationResultList(pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("新增")

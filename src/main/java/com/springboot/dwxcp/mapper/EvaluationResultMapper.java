@@ -7,8 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface EvaluationResultMapper extends BaseMapper<EvaluationResult> {
-    List<EvaluationResult> getEvaluationResultList(@Param("pageNum") int pageNum,
-                                                   @Param("pageSize") int pageSize);
+    List<EvaluationResult> getEvaluationResultList();
 
     boolean addEvaluationResult(EvaluationResult evaluationResult);
 

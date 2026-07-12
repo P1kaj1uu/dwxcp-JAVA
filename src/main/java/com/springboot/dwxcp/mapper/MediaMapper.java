@@ -12,5 +12,7 @@ public interface MediaMapper extends BaseMapper<Media> {
 
     Media selectMediaById(@Param("id") Long id);
 
+    byte[] selectMediaContent(@Param("id") Long id);
+
     int deleteMediaById(@Param("id") Long id);
 }

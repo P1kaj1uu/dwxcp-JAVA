@@ -26,21 +26,10 @@ public class EvaluationController {
             @RequestParam(required = false) String quarter,
             @RequestParam(required = false) String responsibilityPost,
             @RequestParam(required = false) String responsibilityArea,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询所有评价列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Evaluation> list = null;
-        PageInfo page = null;
-        try {
-            list = evaluationService.getEvaluationList(name, year, quarter, responsibilityPost, responsibilityArea, pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<Evaluation> page = evaluationService.getEvaluationList(name, year, quarter, responsibilityPost, responsibilityArea, pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("单个新增")

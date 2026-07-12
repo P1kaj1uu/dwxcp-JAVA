@@ -8,8 +8,36 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.BranchsMapper">
-    <select id="getBranchsList" resultType="com.springboot.dwxcp.entity.Branchs">
-        select * from branchs
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.Branchs">
+        <id column="id" property="id"/>
+        <result column="count1" property="count1"/>
+        <result column="count2" property="count2"/>
+        <result column="count3" property="count3"/>
+        <result column="count4" property="count4"/>
+        <result column="count5" property="count5"/>
+        <result column="count6" property="count6"/>
+        <result column="count7" property="count7"/>
+        <result column="count8" property="count8"/>
+        <result column="count9" property="count9"/>
+        <result column="count10" property="count10"/>
+        <result column="count11" property="count11"/>
+        <result column="count12" property="count12"/>
+        <result column="count13" property="count13"/>
+        <result column="count14" property="count14"/>
+        <result column="count15" property="count15"/>
+        <result column="count16" property="count16"/>
+        <result column="count17" property="count17"/>
+        <result column="count18" property="count18"/>
+        <result column="count19" property="count19"/>
+        <result column="count20" property="count20"/>
+        <result column="time" property="time"/>
+    </resultMap>
+
+    <select id="getBranchsList" resultMap="BaseResultMap">
+        SELECT id, count1, count2, count3, count4, count5, count6, count7, count8, count9, count10,
+               count11, count12, count13, count14, count15, count16, count17, count18, count19, count20, time
+        FROM branchs
+        ORDER BY id DESC
     </select>
 
     <insert id="addBranchs" useGeneratedKeys="true" keyProperty="id">

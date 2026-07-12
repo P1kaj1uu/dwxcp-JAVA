@@ -1,9 +1,12 @@
 package com.springboot.dwxcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.Member;
 import com.springboot.dwxcp.mapper.MemberMapper;
 import com.springboot.dwxcp.service.MemberService;
+import com.springboot.dwxcp.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     private MemberMapper memberMapper;
 
     @Override
-    public List<Member> getMemberList(String name, String condition, String groups, int pageNum, int pageSize) {
-        return memberMapper.getMemberList(name, condition, groups, pageNum, pageSize);
+    public PageInfo<Member> getMemberList(String name, String condition, String groups, int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<Member> list = memberMapper.getMemberList(name, condition, groups);
+        return new PageInfo<>(list);
     }
 
     @Override

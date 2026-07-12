@@ -10,9 +10,7 @@ public interface MemberMapper extends BaseMapper<Member> {
     List<Member> getMemberList(
             @Param("name") String name,
             @Param("condition") String condition,
-            @Param("groups") String groups,
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
+            @Param("groups") String groups
     );
 
     boolean addMember(Member member);

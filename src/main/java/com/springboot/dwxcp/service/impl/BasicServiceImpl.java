@@ -1,9 +1,12 @@
 package com.springboot.dwxcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.Basic;
 import com.springboot.dwxcp.mapper.BasicMapper;
 import com.springboot.dwxcp.service.BasicService;
+import com.springboot.dwxcp.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,13 +18,19 @@ public class BasicServiceImpl extends ServiceImpl<BasicMapper, Basic> implements
     private BasicMapper basicMapper;
 
     @Override
-    public List<Basic> getBasicList(int pageNum, int pageSize) {
-        return basicMapper.getBasicList(pageNum, pageSize);
+    public PageInfo<Basic> getBasicList(int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<Basic> list = basicMapper.getBasicList();
+        return new PageInfo<>(list);
     }
 
     @Override
-    public List<Basic> getBasicByType(String type) {
-        return basicMapper.getBasicByType(type);
+    public PageInfo<Basic> getBasicByType(String type, int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<Basic> list = basicMapper.getBasicByType(type);
+        return new PageInfo<>(list);
     }
 
     @Override

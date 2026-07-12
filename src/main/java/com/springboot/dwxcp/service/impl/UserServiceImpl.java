@@ -1,12 +1,16 @@
 package com.springboot.dwxcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.User;
 import com.springboot.dwxcp.mapper.UserMapper;
 import com.springboot.dwxcp.service.UserService;
+import com.springboot.dwxcp.util.PageUtil;
 import com.springboot.dwxcp.util.PasswordEncoderUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -15,8 +19,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private UserMapper userMapper;
 
     @Override
-    public List<User> selectUserList(int pageNum, int pageSize) {
-        return userMapper.selectUserList(pageNum, pageSize);
+    public PageInfo<User> selectUserList(int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<User> list = userMapper.selectUserList();
+        return new PageInfo<>(list);
     }
 
     @Override
@@ -49,8 +56,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userMapper.addUser(user);
     }
 
+    /**
+     * 登录：先按用户名查（含密码字段），再 BCrypt 比对
+     * 修复点：原 SQL 用明文比对密码，与 PasswordEncoderUtil.encode() 写入的 BCrypt 哈希不匹配，登录永远失败
+     */
     @Override
-    public User selectUserLogin(User user) {
-        return userMapper.selectUserLogin(user);
+    public User selectUserLogin(String username, String rawPassword) {
+        if (username == null || rawPassword == null) {
+            return null;
+        }
+        User stored = userMapper.selectInfoByName(username);
+        if (stored == null || stored.getPassword() == null) {
+            return null;
+        }
+        if (!PasswordEncoderUtil.matches(rawPassword, stored.getPassword())) {
+            return null;
+        }
+        // 不让密码字段外泄
+        stored.setPassword(null);
+        return stored;
     }
 }

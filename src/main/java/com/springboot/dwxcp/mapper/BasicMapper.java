@@ -7,10 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface BasicMapper extends BaseMapper<Basic> {
-    List<Basic> getBasicList(
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
-    );
+    List<Basic> getBasicList();
 
     List<Basic> getBasicByType(String type);
 

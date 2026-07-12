@@ -1,13 +1,14 @@
 package com.springboot.dwxcp.service;
 
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.Branchs;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface BranchsService {
-    // 查询党支部列表
-    List<Branchs> getBranchsList(
+    // 查询党支部列表（分页）
+    PageInfo<Branchs> getBranchsList(
             @Param("pageNum") int pageNum,
             @Param("pageSize") int pageSize
     );

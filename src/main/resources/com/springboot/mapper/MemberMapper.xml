@@ -8,19 +8,45 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.MemberMapper">
-    <select id="getMemberList" resultType="com.springboot.dwxcp.entity.Member">
-        select * from member
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.Member">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="sex" property="sex"/>
+        <result column="nation" property="nation"/>
+        <result column="culture" property="culture"/>
+        <result column="birthday" property="birthday"/>
+        <result column="job" property="job"/>
+        <result column="party" property="party"/>
+        <result column="position" property="position"/>
+        <result column="title" property="title"/>
+        <result column="address" property="address"/>
+        <result column="condition" property="condition"/>
+        <result column="groups" property="groups"/>
+        <result column="transfer" property="transfer"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!--
+        党员列表：分页由 PageHelper.startPage 控制
+        - name: 前缀匹配，走 idx_name 索引
+        - condition / groups: 精确匹配（前端下拉枚举值），走 idx_groups / idx_groups_name
+    -->
+    <select id="getMemberList" resultMap="BaseResultMap">
+        SELECT id, name, sex, nation, culture, birthday, job, party, position, title,
+               address, `condition`, `groups`, `transfer`, remark
+        FROM member
         <where>
             <if test="name != null and name != ''">
-                and name like concat('%', #{name}, '%')
+                AND name LIKE CONCAT(#{name}, '%')
             </if>
             <if test="condition != null and condition != ''">
-                and condition like concat('%', #{condition}, '%')
+                AND `condition` = #{condition}
             </if>
             <if test="groups != null and groups != ''">
-                and `groups` like concat('%', #{groups}, '%')
+                AND `groups` = #{groups}
             </if>
         </where>
+        ORDER BY id DESC
     </select>
 
     <insert id="addMember" useGeneratedKeys="true" keyProperty="id">

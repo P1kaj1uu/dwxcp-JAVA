@@ -3,12 +3,26 @@
         PUBLIC "-//mybatis.org//DTD mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.dwxcp.mapper.BasicMapper">
-    <select id="getBasicList" resultType="com.springboot.dwxcp.entity.Basic">
-        select * from basic
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.Basic">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="position" property="position"/>
+        <result column="type" property="type"/>
+        <result column="photo" property="photo"/>
+    </resultMap>
+
+    <!-- 列表：分页由 PageHelper 控制 -->
+    <select id="getBasicList" resultMap="BaseResultMap">
+        SELECT id, name, position, type, photo
+        FROM basic
+        ORDER BY id DESC
     </select>
 
-    <select id="getBasicByType" resultType="com.springboot.dwxcp.entity.Basic">
-        select * from basic where type = #{type}
+    <select id="getBasicByType" resultMap="BaseResultMap">
+        SELECT id, name, position, type, photo
+        FROM basic
+        WHERE type = #{type}
+        ORDER BY id DESC
     </select>
 
     <insert id="addBasic" useGeneratedKeys="true" keyProperty="id">
@@ -43,7 +57,9 @@
         update basic set photo = #{photo} where id = #{id}
     </update>
 
-    <select id="selectBasicById" resultType="com.springboot.dwxcp.entity.Basic">
-        select * from basic where id = #{id}
+    <select id="selectBasicById" resultMap="BaseResultMap">
+        SELECT id, name, position, type, photo
+        FROM basic
+        WHERE id = #{id}
     </select>
 </mapper>

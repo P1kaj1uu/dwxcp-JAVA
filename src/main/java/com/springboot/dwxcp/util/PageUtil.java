@@ -17,6 +17,43 @@ public class PageUtil implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /** 默认页大小 */
+    public static final int DEFAULT_PAGE_SIZE = 20;
+    /** 单次最大页大小，防止前端传 10000 把数据库拖死 */
+    public static final int MAX_PAGE_SIZE = 100;
+
+    /**
+     * 参数护栏：pageNum / pageSize 校验
+     * - pageNum <= 0 修正为 1
+     * - pageSize <= 0 修正为 DEFAULT_PAGE_SIZE
+     * - pageSize > MAX_PAGE_SIZE 截断为 MAX_PAGE_SIZE
+     */
+    public static int guardPageNum(int pageNum) {
+        return pageNum <= 0 ? 1 : pageNum;
+    }
+
+    public static int guardPageSize(int pageSize) {
+        if (pageSize <= 0) return DEFAULT_PAGE_SIZE;
+        return Math.min(pageSize, MAX_PAGE_SIZE);
+    }
+
+    /**
+     * 一次性返回校正后的 (pageNum, pageSize)
+     */
+    public static PageParams guard(int pageNum, int pageSize) {
+        return new PageParams(guardPageNum(pageNum), guardPageSize(pageSize));
+    }
+
+    @Data
+    public static class PageParams {
+        private final int pageNum;
+        private final int pageSize;
+        public PageParams(int pageNum, int pageSize) {
+            this.pageNum = pageNum;
+            this.pageSize = pageSize;
+        }
+    }
+
     //总记录数
     private int totalCount;
 

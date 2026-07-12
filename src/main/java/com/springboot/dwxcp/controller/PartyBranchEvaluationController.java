@@ -24,21 +24,10 @@ public class PartyBranchEvaluationController {
             @RequestParam(required = false) String partyBranch,
             @RequestParam(required = false) String year,
             @RequestParam(required = false) String quarter,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询党员创岗建区季度评议汇总表 - 党小组评价列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<PartyBranchEvaluation> list = null;
-        PageInfo page = null;
-        try {
-            list = partyBranchEvaluationService.getPartyBranchEvaluationList(partyBranch, year, quarter, pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<PartyBranchEvaluation> page = partyBranchEvaluationService.getPartyBranchEvaluationList(partyBranch, year, quarter, pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("新增")

@@ -1,13 +1,14 @@
 package com.springboot.dwxcp.service;
 
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.PartyBranchEvaluation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface PartyBranchEvaluationService {
-    // 查询党员创岗建区季度评议汇总表 - 党小组评价列表
-    List<PartyBranchEvaluation> getPartyBranchEvaluationList(
+    // 查询党员创岗建区季度评议汇总表 - 党小组评价列表（分页）
+    PageInfo<PartyBranchEvaluation> getPartyBranchEvaluationList(
             @Param("partyBranch") String partyBranch,
             @Param("year") String year,
             @Param("quarter") String quarter,

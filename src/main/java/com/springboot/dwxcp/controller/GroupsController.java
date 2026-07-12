@@ -24,21 +24,10 @@ public class GroupsController {
             @RequestParam(required = false) String party,
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String name1,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询所有党小组列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Groups> list = null;
-        PageInfo page = null;
-        try {
-            list = groupsService.getGroupsList(party, name, name1, pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<Groups> page = groupsService.getGroupsList(party, name, name1, pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("单个新增")

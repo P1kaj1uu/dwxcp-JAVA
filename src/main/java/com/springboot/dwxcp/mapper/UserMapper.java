@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserMapper extends BaseMapper<User> {
-    List<User> selectUserList(@Param("pageNum") int pageNum, @Param("pageSize") int pageSize);
+    List<User> selectUserList();
 
     User selectMyUser(int userId);
 
@@ -18,6 +18,4 @@ public interface UserMapper extends BaseMapper<User> {
     boolean deleteUserById(int userId);
 
     boolean addUser(User user);
-
-    User selectUserLogin(User user);
 }

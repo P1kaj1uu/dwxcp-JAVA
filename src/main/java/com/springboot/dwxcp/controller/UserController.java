@@ -6,13 +6,11 @@ import com.springboot.dwxcp.common.StatusCode;
 import com.springboot.dwxcp.entity.User;
 import com.springboot.dwxcp.service.UserService;
 import com.springboot.dwxcp.util.JWTUtil;
-import com.springboot.dwxcp.util.PasswordEncoderUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Api(tags = "用户模块")
@@ -24,19 +22,10 @@ public class UserController {
 
     @ApiOperation("查询所有用户列表")
     @GetMapping(value = "/list")
-    private BaseResponse selectUserList(@RequestParam("pageNum") int pageNum, @RequestParam("pageSize") int pageSize) {
-        System.out.println("----------------查询所有用户列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<User> list = null;
-        PageInfo page = null;
-        try {
-            list = userService.selectUserList(pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+    private BaseResponse selectUserList(@RequestParam(defaultValue = "1") int pageNum,
+                                        @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<User> page = userService.selectUserList(pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("根据用户id查询当前用户信息")
@@ -121,39 +110,22 @@ public class UserController {
     @ApiOperation("登录")
     @PostMapping(value = "/login")
     private BaseResponse selectUserLogin(@RequestBody User user) {
-        System.out.println("----------------登录------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        User currentUser = null;
-        User tempUser = null;
-        String token = "";
-        boolean flag = true;
-        Map userMap = new HashMap<>();
-        try {
-            String oldPassword = user.getPassword();
-            tempUser = userService.selectInfoByName(user.getUsername());
-            if (tempUser != null) {
-                flag = PasswordEncoderUtil.matches(oldPassword, tempUser.getPassword());
-                user.setPassword(tempUser.getPassword());
-                System.out.println("输入的密码：" + oldPassword);
-                System.out.println(flag);
-            }
-            currentUser = userService.selectUserLogin(user);
-            if (currentUser == null || !flag) {
-                response = new BaseResponse(StatusCode.Fail.getCode(), "账号或密码错误");
-            } else {
-                // 生成token并返回
-                int id = currentUser.getId().intValue();
-                String name = currentUser.getUsername();
-                long curId = new Long((long)id);
-                token = JWTUtil.createToken(curId, name);
-                userMap.put("id", currentUser.getId());
-                userMap.put("username", currentUser.getUsername());
-                userMap.put("token", token);
-            }
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
+        String username = user.getUsername();
+        String rawPassword = user.getPassword();
+        if (username == null || rawPassword == null) {
+            return new BaseResponse(StatusCode.InvalidParams.getCode(), "用户名或密码不能为空");
         }
-        response.setData(userMap);
-        return response;
+        User currentUser = userService.selectUserLogin(username, rawPassword);
+        if (currentUser == null) {
+            return new BaseResponse(StatusCode.AccountPasswordNotMatch);
+        }
+        // 生成 token
+        long curId = currentUser.getId();
+        String token = JWTUtil.createToken(curId, currentUser.getUsername());
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put("id", currentUser.getId());
+        userMap.put("username", currentUser.getUsername());
+        userMap.put("token", token);
+        return new BaseResponse<>(StatusCode.Success, userMap);
     }
 }

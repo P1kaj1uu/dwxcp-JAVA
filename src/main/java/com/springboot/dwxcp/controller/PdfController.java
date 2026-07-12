@@ -52,19 +52,18 @@ public class PdfController {
         return response;
     }
 
-    @ApiOperation("获取PDF文件列表")
+    @ApiOperation("获取PDF文件列表（默认包含 fileContent base64，可通过 withContent=false 仅返回元信息）")
     @GetMapping("/list")
-    public BaseResponse selectPdfList(@RequestParam("type") String type) {
-        System.out.println("----------------获取PDF文件列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Pdf> list = null;
-        try {
-            list = pdfService.selectPdfList(type);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
+    public BaseResponse selectPdfList(@RequestParam("type") String type,
+                                      @RequestParam(defaultValue = "true") boolean withContent) {
+        List<Pdf> list = pdfService.selectPdfList(type);
+        if (!withContent) {
+            // 仅返回元信息，避免响应过大
+            for (Pdf p : list) {
+                p.setFileContent(null);
+            }
         }
-        response.setData(list);
-        return response;
+        return new BaseResponse<>(StatusCode.Success, list);
     }
 
     @ApiOperation("预览/下载PDF文件")

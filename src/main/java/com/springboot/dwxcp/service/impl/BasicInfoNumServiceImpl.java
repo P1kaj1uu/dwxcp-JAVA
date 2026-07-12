@@ -1,9 +1,12 @@
 package com.springboot.dwxcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.BasicInfoNum;
 import com.springboot.dwxcp.mapper.BasicInfoNumMapper;
 import com.springboot.dwxcp.service.BasicInfoNumService;
+import com.springboot.dwxcp.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +19,11 @@ public class BasicInfoNumServiceImpl extends ServiceImpl<BasicInfoNumMapper, Bas
 
 
     @Override
-    public List<BasicInfoNum> getBasicInfoNumList(int pageNum, int pageSize) {
-        return basicInfoNumMapper.getBasicInfoNumList(pageNum, pageSize);
+    public PageInfo<BasicInfoNum> getBasicInfoNumList(int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<BasicInfoNum> list = basicInfoNumMapper.getBasicInfoNumList();
+        return new PageInfo<>(list);
     }
 
     @Override

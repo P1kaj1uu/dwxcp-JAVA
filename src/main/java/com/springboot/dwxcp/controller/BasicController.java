@@ -25,38 +25,19 @@ public class BasicController {
     @ApiOperation("查询所有基本情况列表")
     @GetMapping(value = "/list")
     private BaseResponse getBasicList(
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询所有基本情况列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Basic> list = null;
-        PageInfo page = null;
-        try {
-            list = basicService.getBasicList(pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<Basic> page = basicService.getBasicList(pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("按部门筛选")
     @GetMapping(value = "/find")
-    private BaseResponse getBasicByType(@RequestParam("type") String type) {
-        System.out.println("----------------按部门筛选------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Basic> list = null;
-        PageInfo page = null;
-        try {
-            list = basicService.getBasicByType(type);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+    private BaseResponse getBasicByType(@RequestParam("type") String type,
+                                        @RequestParam(defaultValue = "1") int pageNum,
+                                        @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<Basic> page = basicService.getBasicByType(type, pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("上传照片")

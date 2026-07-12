@@ -9,7 +9,10 @@
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.ShowMediaMapper">
     <select id="getShowMediaList" resultType="com.springboot.dwxcp.entity.ShowMedia">
-        select * from show_media
+        SELECT id, type
+        FROM show_media
+        ORDER BY id DESC
+        LIMIT 50
     </select>
 
     <update id="editShowMediaById" parameterType="com.springboot.dwxcp.entity.ShowMedia">

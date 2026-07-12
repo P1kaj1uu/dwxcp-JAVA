@@ -8,16 +8,35 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.UserMapper">
-    <select id="selectUserList" resultType="com.springboot.dwxcp.entity.User">
-        select * from user order by id desc
+    <!-- 不查密码字段，避免泄漏到前端 -->
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+    </resultMap>
+
+    <!-- 仅 username 字段映射；调用方拿到 password 字段为 null -->
+    <resultMap id="BaseResultMapWithPassword" type="com.springboot.dwxcp.entity.User">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+    </resultMap>
+
+    <select id="selectUserList" resultMap="BaseResultMap">
+        SELECT id, username
+        FROM user
+        ORDER BY id DESC
     </select>
 
-    <select id="selectMyUser" resultType="com.springboot.dwxcp.entity.User">
-        select * from user where id = #{id}
+    <select id="selectMyUser" resultMap="BaseResultMap">
+        SELECT id, username
+        FROM user
+        WHERE id = #{id}
     </select>
 
-    <select id="selectInfoByName" resultType="com.springboot.dwxcp.entity.User">
-        select * from user where username = #{username}
+    <select id="selectInfoByName" resultMap="BaseResultMapWithPassword">
+        SELECT id, username, password
+        FROM user
+        WHERE username = #{username}
     </select>
 
     <update id="editUserPasswordById" parameterType="com.springboot.dwxcp.entity.User">
@@ -36,8 +55,4 @@
         insert into user (username, password)
         values (#{username}, #{password})
     </insert>
-
-    <select id="selectUserLogin" resultType="com.springboot.dwxcp.entity.User">
-        select * from user where username = #{username} and password = #{password}
-    </select>
 </mapper>

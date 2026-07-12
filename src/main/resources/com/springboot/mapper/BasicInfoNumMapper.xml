@@ -8,8 +8,27 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.BasicInfoNumMapper">
-    <select id="getBasicInfoNumList" resultType="com.springboot.dwxcp.entity.BasicInfoNum">
-        select * from basic_info_num
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.BasicInfoNum">
+        <id column="id" property="id"/>
+        <result column="party_num1" property="partyNum1"/>
+        <result column="party_num2" property="partyNum2"/>
+        <result column="party_num3" property="partyNum3"/>
+        <result column="party_num4" property="partyNum4"/>
+        <result column="party_num5" property="partyNum5"/>
+        <result column="party_num6" property="partyNum6"/>
+        <result column="che_num1" property="cheNum1"/>
+        <result column="che_num2" property="cheNum2"/>
+        <result column="tuan_num1" property="tuanNum1"/>
+        <result column="tuan_num2" property="tuanNum2"/>
+        <result column="tuan_num3" property="tuanNum3"/>
+        <result column="tuan_num4" property="tuanNum4"/>
+    </resultMap>
+
+    <select id="getBasicInfoNumList" resultMap="BaseResultMap">
+        SELECT id, party_num1, party_num2, party_num3, party_num4, party_num5, party_num6,
+               che_num1, che_num2, tuan_num1, tuan_num2, tuan_num3, tuan_num4
+        FROM basic_info_num
+        ORDER BY id DESC
     </select>
 
     <insert id="addBasicInfoNum" useGeneratedKeys="true" keyProperty="id">

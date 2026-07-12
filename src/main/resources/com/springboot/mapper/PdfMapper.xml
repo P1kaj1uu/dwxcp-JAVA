@@ -4,16 +4,36 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.springboot.dwxcp.mapper.PdfMapper">
 
-    <select id="selectPdfListWithoutContent" resultType="com.springboot.dwxcp.entity.Pdf">
-        select id, file_name, file_type, file_content from pdf
-        <if test="type != null and type != ''">
-            where file_type = #{type}
-        </if>
-        order by id desc
+    <!-- 单条：包含 file_content -->
+    <resultMap id="WithContentResultMap" type="com.springboot.dwxcp.entity.Pdf">
+        <id column="id" property="id"/>
+        <result column="file_name" property="fileName"/>
+        <result column="file_type" property="fileType"/>
+        <result column="file_content" property="fileContent"/>
+    </resultMap>
+
+    <!--
+        列表：返回 file_content
+        ⚠ 注意：PDF 文件通常每份 1~10 MB，100 行就是 100 MB~1 GB 的 base64 响应
+        - 前端若只是展示文件名/类型，请改回不取 file_content 的版本
+        - 当前实现按业务要求返回所有 PDF 二进制
+    -->
+    <select id="selectPdfListWithoutContent" resultMap="WithContentResultMap">
+        SELECT id, file_name, file_type, file_content
+        FROM pdf
+        <where>
+            <if test="type != null and type != ''">
+                AND file_type = #{type}
+            </if>
+        </where>
+        ORDER BY id DESC
+        LIMIT 100
     </select>
 
-    <select id="selectPdfById" resultType="com.springboot.dwxcp.entity.Pdf">
-        select id, file_name, file_type, file_content from pdf where id = #{id}
+    <select id="selectPdfById" resultMap="WithContentResultMap">
+        SELECT id, file_name, file_type, file_content
+        FROM pdf
+        WHERE id = #{id}
     </select>
 
     <delete id="deletePdfById">

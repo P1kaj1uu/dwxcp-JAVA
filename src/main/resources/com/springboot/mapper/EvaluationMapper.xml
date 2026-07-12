@@ -8,25 +8,46 @@
     resultType：返回值类型
 -->
 <mapper namespace="com.springboot.dwxcp.mapper.EvaluationMapper">
-    <select id="getEvaluationList" resultType="com.springboot.dwxcp.entity.Evaluation">
-        select * from evaluation
+    <resultMap id="BaseResultMap" type="com.springboot.dwxcp.entity.Evaluation">
+        <id column="id" property="id"/>
+        <result column="year" property="year"/>
+        <result column="quarter" property="quarter"/>
+        <result column="party_branch" property="partyBranch"/>
+        <result column="name" property="name"/>
+        <result column="responsibility_post" property="responsibilityPost"/>
+        <result column="responsibility_area" property="responsibilityArea"/>
+        <result column="comments" property="comments"/>
+        <result column="good" property="good"/>
+        <result column="safetyStar" property="safetyStar"/>
+    </resultMap>
+
+    <!--
+        评议列表：分页由 PageHelper.startPage 控制
+        - year / quarter / partyBranch / responsibilityPost 是下拉枚举，全部走 =
+        - name / responsibilityArea 是文本搜索，改为前缀匹配（走索引）
+    -->
+    <select id="getEvaluationList" resultMap="BaseResultMap">
+        SELECT id, year, quarter, party_branch, name, responsibility_post,
+               responsibility_area, comments, good, safetyStar
+        FROM evaluation
         <where>
             <if test="name != null and name != ''">
-                and name like concat('%', #{name}, '%')
+                AND name LIKE CONCAT(#{name}, '%')
             </if>
             <if test="year != null and year != ''">
-                and year like concat('%', #{year}, '%')
+                AND year = #{year}
             </if>
             <if test="quarter != null and quarter != ''">
-                and quarter like concat('%', #{quarter}, '%')
+                AND quarter = #{quarter}
             </if>
             <if test="responsibilityPost != null and responsibilityPost != ''">
-                and responsibility_post like concat('%', #{responsibilityPost}, '%')
+                AND responsibility_post = #{responsibilityPost}
             </if>
             <if test="responsibilityArea != null and responsibilityArea != ''">
-                and responsibility_area like concat('%', #{responsibilityArea}, '%')
+                AND responsibility_area LIKE CONCAT(#{responsibilityArea}, '%')
             </if>
         </where>
+        ORDER BY id DESC
     </select>
 
     <insert id="addEvaluation" useGeneratedKeys="true" keyProperty="id">

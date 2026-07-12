@@ -1,13 +1,14 @@
 package com.springboot.dwxcp.service;
 
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.Evaluation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 public interface EvaluationService {
-    // 查询党员创岗建区季度评议汇总表列表
-    List<Evaluation> getEvaluationList(
+    // 查询党员创岗建区季度评议汇总表列表（分页）
+    PageInfo<Evaluation> getEvaluationList(
             @Param("name") String name,
             @Param("year") String year,
             @Param("quarter") String quarter,

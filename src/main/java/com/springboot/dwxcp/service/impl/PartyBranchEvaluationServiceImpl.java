@@ -1,9 +1,12 @@
 package com.springboot.dwxcp.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.springboot.dwxcp.entity.PartyBranchEvaluation;
 import com.springboot.dwxcp.mapper.PartyBranchEvaluationMapper;
 import com.springboot.dwxcp.service.PartyBranchEvaluationService;
+import com.springboot.dwxcp.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +18,11 @@ public class PartyBranchEvaluationServiceImpl extends ServiceImpl<PartyBranchEva
     private PartyBranchEvaluationMapper partyBranchEvaluationMapper;
 
     @Override
-    public List<PartyBranchEvaluation> getPartyBranchEvaluationList(String partyBranch, String year, String quarter, int pageNum, int pageSize) {
-        return partyBranchEvaluationMapper.getPartyBranchEvaluationList(partyBranch, year, quarter, pageNum, pageSize);
+    public PageInfo<PartyBranchEvaluation> getPartyBranchEvaluationList(String partyBranch, String year, String quarter, int pageNum, int pageSize) {
+        PageUtil.PageParams p = PageUtil.guard(pageNum, pageSize);
+        PageHelper.startPage(p.getPageNum(), p.getPageSize());
+        List<PartyBranchEvaluation> list = partyBranchEvaluationMapper.getPartyBranchEvaluationList(partyBranch, year, quarter);
+        return new PageInfo<>(list);
     }
 
     @Override

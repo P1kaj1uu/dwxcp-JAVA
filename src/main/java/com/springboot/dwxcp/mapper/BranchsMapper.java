@@ -7,10 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface BranchsMapper extends BaseMapper<Branchs> {
-    List<Branchs> getBranchsList(
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
-    );
+    List<Branchs> getBranchsList();
 
     boolean addBranchs(Branchs branchs);
 

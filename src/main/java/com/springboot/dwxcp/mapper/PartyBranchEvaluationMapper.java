@@ -10,9 +10,7 @@ public interface PartyBranchEvaluationMapper extends BaseMapper<PartyBranchEvalu
     List<PartyBranchEvaluation> getPartyBranchEvaluationList(
             @Param("partyBranch") String partyBranch,
             @Param("year") String year,
-            @Param("quarter") String quarter,
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
+            @Param("quarter") String quarter
     );
 
     boolean addPartyBranchEvaluation(PartyBranchEvaluation partyBranchEvaluation);

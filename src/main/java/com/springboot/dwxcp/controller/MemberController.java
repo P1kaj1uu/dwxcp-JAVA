@@ -24,21 +24,11 @@ public class MemberController {
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String condition,
             @RequestParam(required = false) String groups,
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
 
-        System.out.println("----------------查询所有党员列表------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<Member> list = null;
-        PageInfo page = null;
-        try {
-            list = memberService.getMemberList(name, condition, groups, pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+        PageInfo<Member> page = memberService.getMemberList(name, condition, groups, pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("单个新增")

@@ -22,21 +22,10 @@ public class BasicInfoNumController {
     @ApiOperation("查询基本信息人员年龄等情况")
     @GetMapping(value = "/list")
     private BaseResponse getBasicInfoNumList(
-            @RequestParam("pageNum") int pageNum,
-            @RequestParam("pageSize") int pageSize) {
-
-        System.out.println("----------------查询基本信息人员年龄等情况------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<BasicInfoNum> list = null;
-        PageInfo page = null;
-        try {
-            list = basicInfoNumService.getBasicInfoNumList(pageNum, pageSize);
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+            @RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue = "20") int pageSize) {
+        PageInfo<BasicInfoNum> page = basicInfoNumService.getBasicInfoNumList(pageNum, pageSize);
+        return new BaseResponse<>(StatusCode.Success, page);
     }
 
     @ApiOperation("新增")

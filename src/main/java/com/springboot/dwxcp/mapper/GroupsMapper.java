@@ -10,9 +10,7 @@ public interface GroupsMapper extends BaseMapper<Groups> {
     List<Groups> getGroupsList(
             @Param("party") String party,
             @Param("name") String name,
-            @Param("name1") String name1,
-            @Param("pageNum") int pageNum,
-            @Param("pageSize") int pageSize
+            @Param("name1") String name1
     );
 
     boolean addGroups(Groups groups);

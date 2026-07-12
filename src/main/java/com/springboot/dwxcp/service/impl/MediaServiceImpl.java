@@ -21,16 +21,25 @@ public class MediaServiceImpl extends ServiceImpl<MediaMapper, Media> implements
 
     @Override
     public List<Media> selectMediaList(String category) {
+        // 列表查询已带 LIMIT 200，走 mapper 自定义 SQL（不拉 BLOB）
         return mediaMapper.selectMediaListWithoutContent(category);
     }
 
     @Override
     public Media selectMediaById(Long id) {
-        return mediaMapper.selectById(id);
+        // 走 mapper 自定义 SQL：列表字段 + BLOB
+        return mediaMapper.selectMediaById(id);
+    }
+
+    /**
+     * 仅下载 file_content，避免拉全行
+     */
+    public byte[] selectMediaContent(Long id) {
+        return mediaMapper.selectMediaContent(id);
     }
 
     @Override
     public boolean deleteMediaById(Long id) {
-        return mediaMapper.deleteById(id) > 0;
+        return mediaMapper.deleteMediaById(id) > 0;
     }
 }

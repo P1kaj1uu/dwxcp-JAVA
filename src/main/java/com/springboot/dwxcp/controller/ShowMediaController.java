@@ -21,19 +21,8 @@ public class ShowMediaController {
     @ApiOperation("返回主页多媒体展示图片还是视频")
     @GetMapping(value = "/list")
     private BaseResponse getEvaluationList() {
-
-        System.out.println("----------------返回主页多媒体展示图片还是视频------------------");
-        BaseResponse response = new BaseResponse<>(StatusCode.Success);
-        List<ShowMedia> list = null;
-        PageInfo page = null;
-        try {
-            list = showMediaService.getShowMediaList();
-            page = new PageInfo(list);
-        } catch (Exception e) {
-            response = new BaseResponse(StatusCode.Fail.getCode(), e.getMessage());
-        }
-        response.setData(page);
-        return response;
+        List<ShowMedia> list = showMediaService.getShowMediaList();
+        return new BaseResponse<>(StatusCode.Success, list);
     }
 
     @ApiOperation("编辑")
