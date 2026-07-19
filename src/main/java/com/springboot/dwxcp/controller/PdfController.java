@@ -83,6 +83,17 @@ public class PdfController {
         }
     }
 
+    @ApiOperation("获取PDF每页预览图片(Base64)")
+    @GetMapping("/preview-images")
+    public BaseResponse previewImages(@RequestParam("id") Long id) {
+        Pdf pdf = pdfService.selectPdfById(id);
+        if (pdf == null || pdf.getFileContent() == null) {
+            return new BaseResponse(StatusCode.Fail.getCode(), "PDF不存在");
+        }
+        List<String> images = pdfService.pdfToImages(pdf.getFileContent());
+        return new BaseResponse<>(StatusCode.Success, images);
+    }
+
     @ApiOperation("删除PDF文件")
     @DeleteMapping("/delete")
     public BaseResponse deletePdf(@RequestParam("id") Long id) {

@@ -11,4 +11,6 @@ public interface PdfService {
     Pdf selectPdfById(Long id);
 
     boolean deletePdfById(Long id);
+
+    List<String> pdfToImages(byte[] pdfData);
 }
